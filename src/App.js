@@ -8,18 +8,7 @@ class App extends Component {
     super()
 
     this.state = {
-      notes = {
-        'note-4': {
-          id: 'note-4',
-          title: 'Note from obj',
-          body: 'Oh so fancy, I do declare!',
-        },
-        'note-5': {
-          id: 'note-5',
-          title: 'Note from another obj',
-          body: 'Also very fancy',
-        },
-      },
+      notes = {},
       currentNote: this.blankNote(),
     }
   }
@@ -46,7 +35,7 @@ class App extends Component {
       note.id = Date.now() // Timestamp
     }
     notes[note.id] = note
-    
+
     this.setSate({ notes }) // same as ({notes: notes})
     this.setCurrentNote(note)
   }
