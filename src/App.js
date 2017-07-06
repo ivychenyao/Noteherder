@@ -8,16 +8,16 @@ class App extends Component {
     super()
 
     this.state = {
-      notes = {},
+      notes:  {},
       currentNote: this.blankNote(),
     }
   }
 
   blankNote = () => {
     return {
-        id: null,
-        title: '',
-        body: '',
+      id: null,
+      title: '',
+      body: '',
     }
   }
 
