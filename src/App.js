@@ -16,6 +16,20 @@ class App extends Component {
     }
   }
 
+  componentWillMount = () => {
+    auth.onAuthStateChanged(
+      (user) => {
+        if (user) {
+          // Signed in
+          this.handleAuth(user)
+        } else {
+          // Signed out
+          this.setState({ uid: null })
+        }
+      }
+    )
+  }
+
   componentDidMount = () => {
     base.syncState(
       'notes',
@@ -69,9 +83,7 @@ class App extends Component {
   }
 
   signOut = () => {
-    auth
-      .signOut()
-      .then(() => this.setState({ uid: null }))
+    auth.signOut()
   }
 
   render() {
@@ -93,7 +105,7 @@ class App extends Component {
         {
           this.signedIn() 
           ? <Main {...noteData} {...actions} /> 
-          : <SignIn handleAuth={this.handleAuth} />
+          : <SignIn />
         }
       </div>
     )
