@@ -21,10 +21,10 @@ class App extends Component {
     auth.onAuthStateChanged(
       (user) => {
         if (user) {
-          // Signed in
+          // signed in
           this.handleAuth(user)
         } else {
-          // Signed out
+          // signed out
           this.handleUnauth()
         }
       }
@@ -41,18 +41,10 @@ class App extends Component {
     this.bindingRef = base.syncState(
       `notes/${this.state.uid}`,
       {
-        context: this, // What object the state is on
-        state: 'notes', // Which property to sync
+        context: this,  // what object the state is on
+        state: 'notes', // which property to sync
       }
     )
-  }
-
-  blankNote = () => {
-    return {
-      id: null,
-      title: '',
-      body: '',
-    }
   }
 
   setCurrentNote = (note) => {
@@ -65,18 +57,19 @@ class App extends Component {
 
   saveNote = (note) => {
     const notes = {...this.state.notes}
-    if(!note.id) {
-      note.id = Date.now() // Timestamp
+    if (!note.id) {
+      note.id = Date.now()
     }
     notes[note.id] = note
 
-    this.setState({ notes }) // same as ({notes: notes})
+    this.setState({ notes })
     this.setCurrentNote(note)
   }
 
   removeCurrentNote = () => {
     const notes = {...this.state.notes}
     notes[this.state.currentNoteId] = null
+
     this.setState({ notes })
     this.resetCurrentNote()
   }
@@ -96,11 +89,15 @@ class App extends Component {
   handleUnauth = () => {
     localStorage.removeItem('uid')
 
-    if(this.bindingRef) {
+    if (this.bindingRef) {
       base.removeBinding(this.bindingRef)
     }
 
-    this.setState({ uid: null, notes: {}, })
+    this.setState({
+      uid: null,
+      notes: {},
+    })
+
     this.resetCurrentNote()
   }
 
@@ -125,8 +122,8 @@ class App extends Component {
     return (
       <div className="App">
         {
-          this.signedIn() 
-          ? <Main {...noteData} {...actions} /> 
+          this.signedIn()
+          ? <Main {...noteData} {...actions} />
           : <SignIn />
         }
       </div>
