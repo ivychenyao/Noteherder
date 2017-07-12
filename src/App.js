@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       notes:  {},
       uid: null,
+      firebaseNotesSynced: false,
     }
   }
 
@@ -43,6 +44,7 @@ class App extends Component {
       {
         context: this,  // what object the state is on
         state: 'notes', // which property to sync
+        then: () => this.setState({ firebaseNotesSynced: true })
       }
     )
   }
@@ -58,6 +60,7 @@ class App extends Component {
     notes[note.id] = note
 
     this.setState({ notes })
+
     if (shouldRedirect) {
       this.props.history.push(`/notes/${note.id}`)
     }
@@ -68,7 +71,7 @@ class App extends Component {
     notes[note.id] = null
 
     this.setState({ notes })
-    this.props.history.push('/notes')
+    this.props.history.replace('/notes')
   }
 
   signedIn = () => {
@@ -110,25 +113,25 @@ class App extends Component {
     return (
       <div className="App">
         <Switch>
-          <Route 
+          <Route
             path="/sign-in"
             render={() => (
               this.signedIn()
                 ? <Redirect to="/notes" />
                 : <SignIn />
             )}
-            component={SignIn} 
           />
-          <Route 
-            path="/notes" 
+          <Route
+            path="/notes"
             render={() => (
               this.signedIn()
-                ? <Main 
+                ? <Main
                     {...actions}
-                    {...noteData}
+                    notes={this.state.notes}
+                    firebaseNotesSynced={this.state.firebaseNotesSynced}
                   />
                 : <Redirect to="/sign-in" />
-            )} 
+            )}
           />
           <Route render={() => (
             this.signedIn()
